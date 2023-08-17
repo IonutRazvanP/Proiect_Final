@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formular de Înregistrare</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .message {
+      margin-top: 10px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("form").submit(function(event) {
+        event.preventDefault();
+
+        var formData = {
+          Nume: $("#Nume").val(),
+          Prenume: $("#Prenume").val(),
+          Companie: $("#Companie").val(),
+          Id_Manager: $("#id_manager").val()
+        };
+
+        $.ajax({
+          type: "POST",
+          url: "/submit",
+          data: formData,
+
+          success: function(response) {
+            $(".message").text("Userul a fost înregistrat!");
+            $(".message").fadeIn().delay(2000).fadeOut(); // Afișează și ascunde mesajul după 2 secunde
+            $("form")[0].reset(); // Resetează formularul
+          },
+          error: function(error) {
+            console.log(error);
+            $(".message").text("Eroare la înregistrare!");
+            $(".message").fadeIn().delay(2000).fadeOut();
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Formular de Înregistrare</h1>
+  <form>
+    <label for="Nume">Nume:</label>
+    <input type="text" id="Nume" name="Nume" required>
+
+    <label for="Prenume">Prenume:</label>
+    <input type="text" id="Prenume" name="Prenume" required>
+
+    <label for="Companie">Companie:</label>
+    <input type="text" id="Companie" name="Companie" required>
+
+    <label for="id_manager">ID Manager:</label>
+    <input type="text" id="id_manager" name="id_manager" required>
+
+    <input type="submit" value="Înregistrează">
+  </form>
+  <div class="message" style="display: none;"></div>
+</body>
+</html>
